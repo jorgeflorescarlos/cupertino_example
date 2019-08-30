@@ -9,9 +9,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'iOS App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
       home: MyHomePage(),
     );
   }
@@ -46,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 case 0:
                   return CupertinoPageExampleOne();
                   break;
+                case 1:
+                  return CupertinoPageExampleTwo();
+                  break;
                 default:
                   return Container();
               }
@@ -69,7 +71,7 @@ class CupertinoPageExampleOne extends StatelessWidget {
               CupertinoIcons.book,
               color: CupertinoColors.activeBlue,
             ),
-            middle: Text('Welcome Home'),
+            //middle: Text('Welcome Home'),
           ),
           SliverPadding(
             padding: MediaQuery.of(context)
@@ -81,11 +83,62 @@ class CupertinoPageExampleOne extends StatelessWidget {
                   SliverChildBuilderDelegate((BuildContext context, int index) {
                 return Container(
                   padding: EdgeInsets.all(10.0),
+                  child: Material(
+                    elevation: 4.0,
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: index % 2 == 0 ? Colors.yellow : Colors.blue,
+                    child: Center(
+                      child: Text(index.toString()),
+                    ),
+                  ),
                 );
-              }),
+              }, childCount: 20),
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class CupertinoPageExampleTwo extends StatefulWidget {
+  @override
+  _CupertinoPageExampleTwoState createState() =>
+      _CupertinoPageExampleTwoState();
+}
+
+class _CupertinoPageExampleTwoState extends State<CupertinoPageExampleTwo> {
+  double _value = 50.0;
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text("Let's Chat"),
+        trailing: Icon(CupertinoIcons.back),
+        leading: Icon(CupertinoIcons.battery_full),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            CupertinoButton(
+              child: Text('button'),
+              onPressed: () {},
+              //color: CupertinoColors.activeBlue,
+            ),
+            CupertinoSlider(
+              value: _value,
+              min: 0.0,
+              max: 100.0,
+              onChanged: (double value) {
+                setState(() {
+                  _value = value;
+                });
+              },
+              //activeColor: Colors.orange,
+            )
+          ],
+        ),
       ),
     );
   }
